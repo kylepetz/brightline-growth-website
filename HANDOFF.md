@@ -31,7 +31,7 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 ## Open decisions
 - **Contact email:** no address is shown on the site. Form submissions go to `hi@brightlinegrowth.com`, set in the form `action` in `contact.html`. After activating FormSubmit, you can swap the address in `action` for the random alias FormSubmit provides so the inbox isn't visible in the page source.
 - **Custom domain:** live at brightlinegrowth.com (DNS at Squarespace Domains: 4 GitHub A records on @, `www` CNAME to `kylepetz.github.io`; MX and TXT records left for Google Workspace). `CNAME` file in repo. HTTPS enforced once the certificate is issued.
-- **Legal review:** privacy/terms are accurate for the site as built (no analytics, pixels or cookies). Update the privacy policy before adding any tracking.
+- **Legal review:** privacy/terms are accurate for the site as built (no analytics, pixels, or cookies). Update the privacy policy before adding any tracking.
 
 ## Known limits
 - `404.html` uses root-absolute paths so it renders on any bad URL.
