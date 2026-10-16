@@ -12,7 +12,8 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 | File | Purpose |
 |---|---|
 | `index.html` | Home: hero, 3 service cards, "rules we don't bend", CTA band |
-| `contact.html` | Contact form (validation, honeypot, FormSubmit AJAX, mailto fallback on error) |
+| `contact.html` | Contact form (validation, honeypot, FormSubmit POST with reCAPTCHA, redirects to `thanks.html`) |
+| `thanks.html` | Post-submit confirmation page (noindex) |
 | `privacy.html` | Privacy policy (CA/CCPA section, no analytics) |
 | `terms.html` | Terms of service (CA law, San Diego County venue) |
 | `404.html` | Not-found page |

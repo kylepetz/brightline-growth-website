@@ -39,7 +39,11 @@
 
 <section class="section">
   <div class="wrap contact-grid">
-    <form class="form" id="contact-form" novalidate>
+    <form class="form" id="contact-form" action="https://formsubmit.co/hi@brightlinegrowth.com" method="POST" novalidate>
+      <input type="hidden" name="_subject" value="New inquiry from brightlinegrowth.com">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="true">
+      <input type="hidden" name="_next" id="next" value="">
       <div class="form-row">
         <div class="field">
           <label for="name">Name</label>
@@ -89,9 +93,8 @@
         <p class="error" id="message-err" aria-live="polite"></p>
       </div>
       <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <p class="form-note">By sending this form you agree to our <a href="privacy.html">privacy policy</a>. We only use your details to reply.</p>
+      <p class="form-note">By sending this form you agree to our <a href="privacy.html">privacy policy</a>. We only use your details to reply. After you press send, you'll complete a quick captcha to confirm you're human.</p>
       <div><button class="btn" type="submit" id="submit">Send message</button></div>
-      <p class="status" id="status" role="status" hidden></p>
     </form>
 
     <aside class="aside" aria-label="What happens next">
@@ -131,13 +134,13 @@
 </footer>
 <script>
 (function () {
-  // Form submissions are delivered by FormSubmit (formsubmit.co). Change CONTACT_EMAIL to update the inbox.
-  var CONTACT_EMAIL = "hi@brightlinegrowth.com";
-  var ENDPOINT = "https://formsubmit.co/ajax/" + CONTACT_EMAIL;
-
+  // Submissions go to FormSubmit (formsubmit.co) as a normal POST so its server-verified
+  // reCAPTCHA runs before delivery. Change the form's action attribute to update the inbox.
   var form = document.getElementById("contact-form");
   var btn = document.getElementById("submit");
-  var status = document.getElementById("status");
+
+  // Send visitors back to this site's thank-you page, wherever the site is hosted.
+  document.getElementById("next").value = new URL("thanks.html", location.href).href;
 
   function setErr(id, msg) {
     var input = document.getElementById(id);
@@ -145,51 +148,19 @@
     if (msg) input.setAttribute("aria-invalid", "true"); else input.removeAttribute("aria-invalid");
     return !msg;
   }
-  function show(msg, ok) {
-    status.hidden = false;
-    status.className = "status " + (ok ? "ok" : "bad");
-    status.innerHTML = msg;
-  }
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault();
     var f = form.elements;
     var ok = true;
     ok = setErr("name", f.name.value.trim() ? "" : "Please enter your name.") && ok;
     ok = setErr("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim()) ? "" : "Please enter a valid email address.") && ok;
     ok = setErr("message", f.message.value.trim().length >= 10 ? "" : "Please add a sentence or two about what you need.") && ok;
-    if (!ok) { form.querySelector("[aria-invalid=true]").focus(); return; }
-    if (f._honey.value) return;
-
-    var data = {
-      name: f.name.value.trim(),
-      email: f.email.value.trim(),
-      company: f.company.value.trim(),
-      website: f.website.value.trim(),
-      interest: f.interest.value,
-      budget: f.budget.value,
-      message: f.message.value.trim(),
-      _subject: "New inquiry from brightlinegrowth.com",
-      _template: "table",
-      _captcha: "false"
-    };
-
+    if (!ok) { e.preventDefault(); form.querySelector("[aria-invalid=true]").focus(); return; }
     btn.disabled = true; btn.textContent = "Sending...";
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(data)
-    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (res) {
-        if (!res.ok || String(res.j.success) !== "true") throw new Error(res.j.message || "Send failed");
-        form.reset();
-        show("Thanks. Your message is in, and we'll reply within one business day.", true);
-      })
-      .catch(function () {
-        show("Error: the message didn't send. Please email us directly at <a href=\"mailto:" + CONTACT_EMAIL + "\">" + CONTACT_EMAIL + "</a>.", false);
-      })
-      .finally(function () { btn.disabled = false; btn.textContent = "Send message"; });
   });
+
+  // Re-enable the button if the visitor comes back with the browser's back button.
+  window.addEventListener("pageshow", function () { btn.disabled = false; btn.textContent = "Send message"; });
 })();
 </script>
 </body>
