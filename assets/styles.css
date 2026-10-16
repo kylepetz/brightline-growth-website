@@ -48,7 +48,8 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* overflow-x: clip (not hidden) stops sideways scrolling without breaking the sticky header. */
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-padding-top: 88px; }
 body {
   margin: 0;
   background: var(--surface);
@@ -56,6 +57,8 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 24px;
+  overflow-x: clip;
+  touch-action: pan-x pan-y; /* no double-tap or pinch zoom */
 }
 img { max-width: 100%; display: block; }
 a { color: var(--ink); text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -86,7 +89,7 @@ h3 { font-size: 20px; line-height: 26px; }
 .muted { color: var(--ink-muted); }
 
 /* Header */
-.site-header { border-bottom: 1px solid var(--border); background: var(--surface); }
+.site-header { position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border); background: var(--surface); }
 .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); min-height: 72px; }
 .logo { display: inline-flex; padding: var(--space-2) 0; }
 .logo img { width: 150px; height: auto; }
