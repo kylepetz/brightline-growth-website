@@ -30,9 +30,9 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 
 ## Open decisions
 - **Contact email:** no address is shown on the site. Form submissions go to `hi@brightlinegrowth.com`, set in the form `action` in `contact.html`. After activating FormSubmit, you can swap the address in `action` for the random alias FormSubmit provides so the inbox isn't visible in the page source.
-- **Custom domain:** when DNS is ready, add a `CNAME` file containing `brightlinegrowth.com`, point DNS at GitHub Pages (A records 185.199.108-111.153 for apex, CNAME `www` to `{owner}.github.io`), then enable "Enforce HTTPS".
+- **Custom domain:** live at brightlinegrowth.com (DNS at Squarespace Domains: 4 GitHub A records on @, `www` CNAME to `kylepetz.github.io`; MX and TXT records left for Google Workspace). `CNAME` file in repo. HTTPS enforced once the certificate is issued.
 - **Legal review:** privacy/terms are accurate for the site as built (no analytics, pixels or cookies). Update the privacy policy before adding any tracking.
 
 ## Known limits
-- `404.html` uses relative asset paths, so deep bad URLs (e.g. `/a/b/c`) render unstyled. Switch to absolute paths once the custom domain is live.
+- `404.html` uses root-absolute paths so it renders on any bad URL.
 - Fonts load from Google Fonts (disclosed in the privacy policy). Self-host to drop that dependency.
