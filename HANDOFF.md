@@ -15,7 +15,7 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 | `contact.html` | Contact form (validation, honeypot, FormSubmit POST with reCAPTCHA, redirects to `thanks.html`) |
 | `thanks.html` | Post-submit confirmation page (noindex) |
 | `privacy.html` | Privacy policy (CA/CCPA section, no analytics) |
-| `terms.html` | Terms of service (CA law, San Diego County venue) |
+| `terms.html` | Terms of service (CA law, California courts venue) |
 | `404.html` | Not-found page |
 | `assets/styles.css` | All styles, tokens as CSS variables |
 | `assets/*.svg` | Official logo lockups and BG mark (full color + reversed) |
@@ -29,7 +29,7 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 4. Submit a test through the contact form, then click FormSubmit's activation email.
 
 ## Open decisions
-- **Contact email:** `hi@brightlinegrowth.com` is a placeholder in `contact.html` (`CONTACT_EMAIL` constant + mailto link), `privacy.html` and `terms.html`. Replace in all files if a different inbox is used: `grep -rl hi@brightlinegrowth.com . | xargs sed -i '' 's/hi@brightlinegrowth.com/NEW@ADDRESS/g'` (macOS sed).
+- **Contact email:** no address is shown on the site. Form submissions go to `hi@brightlinegrowth.com`, set in the form `action` in `contact.html`. After activating FormSubmit, you can swap the address in `action` for the random alias FormSubmit provides so the inbox isn't visible in the page source.
 - **Custom domain:** when DNS is ready, add a `CNAME` file containing `brightlinegrowth.com`, point DNS at GitHub Pages (A records 185.199.108-111.153 for apex, CNAME `www` to `{owner}.github.io`), then enable "Enforce HTTPS".
 - **Legal review:** privacy/terms are accurate for the site as built (no analytics, pixels or cookies). Update the privacy policy before adding any tracking.
 
