@@ -28,7 +28,7 @@ Publish this static site to a new public GitHub repo (`brightline-growth-website
 4. Submit a test through the contact form, then click FormSubmit's activation email.
 
 ## Open decisions
-- **Contact email:** `hello@brightlinegrowth.com` is a placeholder in `contact.html` (`CONTACT_EMAIL` constant + mailto link), `privacy.html` and `terms.html`. Replace in all files if a different inbox is used: `grep -rl hello@brightlinegrowth.com . | xargs sed -i '' 's/hello@brightlinegrowth.com/NEW@ADDRESS/g'` (macOS sed).
+- **Contact email:** `kyle@brightlinegrowth.com` is a placeholder in `contact.html` (`CONTACT_EMAIL` constant + mailto link), `privacy.html` and `terms.html`. Replace in all files if a different inbox is used: `grep -rl kyle@brightlinegrowth.com . | xargs sed -i '' 's/kyle@brightlinegrowth.com/NEW@ADDRESS/g'` (macOS sed).
 - **Custom domain:** when DNS is ready, add a `CNAME` file containing `brightlinegrowth.com`, point DNS at GitHub Pages (A records 185.199.108-111.153 for apex, CNAME `www` to `{owner}.github.io`), then enable "Enforce HTTPS".
 - **Legal review:** privacy/terms are accurate for the site as built (no analytics, pixels or cookies). Update the privacy policy before adding any tracking.
 
