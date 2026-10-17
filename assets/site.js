@@ -70,13 +70,21 @@
   // Header compacts after the page scrolls a little.
   var header = document.querySelector(".site-header");
   if (header) {
-    var onScroll = function () { header.classList.toggle("is-scrolled", window.scrollY > 8); };
+    // Two thresholds, further apart than the 12px the header shrinks, so compacting
+    // can't nudge the scroll position back across the line and make it flicker.
+    var compact = false;
+    var onScroll = function () {
+      var y = window.scrollY;
+      if (!compact && y > 64) compact = true;
+      else if (compact && y < 4) compact = false;
+      header.classList.toggle("is-scrolled", compact);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }
 
   // Charts, headlines, and dividers animate as they scroll into view.
-  var targets = document.querySelectorAll(".bars, .card, .cta, .section-head, .rule");
+  var targets = document.querySelectorAll(".bars, .card, .cta, .section-head, .rule, .steps, .overcount");
   if (!("IntersectionObserver" in window)) {
     targets.forEach(function (el) { el.classList.add("in"); });
     return;
