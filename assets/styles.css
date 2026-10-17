@@ -299,3 +299,10 @@ h3 { font-size: 20px; line-height: 26px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* Design review fixes */
+.skip:focus { z-index: 200; } /* stay above the sticky header */
+.site-footer :focus-visible, .cta :focus-visible, .page-head :focus-visible { outline-color: var(--lime); } /* 3:1 on navy */
+.card > * { max-width: 62ch; } /* readable line length when cards stack on tablets */
+@media (min-width: 800px) { .cta-wedge { right: max(0px, calc((100vw - var(--max)) / 2)); } } /* keep wedge near content on wide screens */
+.toc li a { display: inline-block; padding: 3px 0; } /* 24px minimum tap height */
