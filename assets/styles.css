@@ -452,13 +452,132 @@ html.theme-switching::view-transition-new(root) { animation: none; mix-blend-mod
 /* Card link to each service page, aligned to the bottom of every card */
 .card-link { margin-top: auto; font-weight: 500; text-underline-offset: 4px; }
 
-/* Long-form copy on service pages (same rhythm as .legal) */
-.prose { max-width: 720px; padding: var(--space-12) 0 var(--space-16); }
-.prose h2 { margin: var(--space-12) 0 var(--space-4); }
-.prose p, .prose ul, .prose ol { margin: 0 0 var(--space-4); }
-.prose ul, .prose ol { padding-left: 20px; }
-.prose li + li { margin-top: var(--space-2); }
-.prose li::marker { color: var(--accent-ink); font-weight: 700; }
+/* Service pages: scannable sections instead of long prose */
+.svc-section { padding: var(--space-12) 0; border-top: 1px solid var(--border); }
+.page-head + .svc-section { border-top: 0; }
+@media (min-width: 720px) { .svc-section { padding: var(--space-16) 0; } }
+.svc-intro { max-width: 640px; margin-bottom: var(--space-8); }
+.svc-intro p { margin: var(--space-3) 0 0; }
+.svc-answer { margin: var(--space-8) 0 0; max-width: 640px; font-size: 20px; line-height: 28px; font-weight: 700; }
+.svc-note { margin: var(--space-6) 0 0; max-width: 640px; }
+.svc-section h3 { font-size: 18px; line-height: 24px; }
+
+/* Page head: tags plus a small chart that plots on load */
+.svc-head .wrap { position: relative; z-index: 1; }
+.svc-head .chips { margin-top: var(--space-6); }
+.head-geo { display: block; width: 120px; height: 70px; margin: var(--space-6) var(--gutter) calc(-1 * var(--space-12)) auto; position: relative; } /* sits on the section edge like a chart baseline */
+.head-geo rect { fill: var(--navy-700); }
+.head-geo polygon { fill: var(--lime); }
+@media (min-width: 900px) {
+  .svc-head { padding: var(--space-16) 0; }
+  .svc-head .wrap > * { max-width: 620px; }
+  .head-geo { position: absolute; margin: 0; width: 240px; height: 140px; bottom: 0; right: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))); }
+}
+
+/* Tags for platforms, tools, and metrics */
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.chips li { border: 1px solid var(--border-strong); padding: var(--space-1) var(--space-3); font-size: 14px; line-height: 20px; font-weight: 500; }
+.chips-inverse li { border-color: #3d5a85; color: var(--ink-inverse); }
+.chips-accent li { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.split .chips { margin-top: var(--space-4); }
+
+/* Problems we find */
+.flags { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-6); grid-template-columns: 1fr; }
+@media (min-width: 720px) { .flags { grid-template-columns: repeat(3, 1fr); } .flags-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .flags-4 { grid-template-columns: repeat(4, 1fr); } }
+.flags li { border-top: 3px solid var(--negative); padding-top: var(--space-4); font-size: 18px; line-height: 26px; font-weight: 700; }
+
+/* What's included: a ruled two-column spec sheet */
+.spec { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--border); }
+@media (min-width: 720px) { .spec { grid-template-columns: 1fr 1fr; column-gap: var(--space-12); } }
+.spec li { padding: var(--space-6) 0; border-bottom: 1px solid var(--border); }
+.spec h3 { display: flex; align-items: center; gap: var(--space-3); }
+.spec h3::before { content: ""; flex: none; width: 10px; height: 10px; background: var(--accent); }
+.spec p { margin: var(--space-1) 0 0 22px; color: var(--ink-muted); }
+
+/* Who it's for */
+.fit { display: grid; gap: var(--space-8); align-items: start; }
+@media (min-width: 880px) { .fit { grid-template-columns: 1fr 1fr; gap: var(--space-12); } }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.checks li { position: relative; padding-left: 32px; font-size: 18px; line-height: 26px; }
+.checks li::before { content: ""; position: absolute; left: 4px; top: 4px; width: 7px; height: 13px; border: solid var(--accent-ink); border-width: 0 3px 3px 0; transform: rotate(45deg); }
+.callout { margin: 0; background: var(--surface-raised); border-left: 4px solid var(--accent); padding: var(--space-6); }
+.section-raised .callout { background: var(--surface); }
+.callout strong { display: block; font-size: 20px; line-height: 26px; margin-bottom: var(--space-2); }
+
+/* How an engagement works: numbered steps on a rail (vertical on phones, horizontal on desktop) */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; }
+.steps li { position: relative; display: grid; grid-template-columns: 40px 1fr; column-gap: var(--space-4); padding-bottom: var(--space-6); }
+.steps li:last-child { padding-bottom: 0; }
+.step-n { grid-row: span 2; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--primary); color: var(--on-primary); font: 800 22px/1 var(--font-display); position: relative; z-index: 1; }
+.steps h3 { margin-top: 8px; }
+.steps p { margin: var(--space-1) 0 0; color: var(--ink-muted); }
+.steps li:not(:last-child)::after { content: ""; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: var(--border); transform-origin: top; }
+@media (min-width: 960px) {
+  .steps { grid-template-columns: repeat(5, 1fr); column-gap: var(--space-6); }
+  .steps li { display: block; padding-bottom: 0; }
+  .step-n { margin-bottom: var(--space-4); }
+  .steps h3 { margin-top: 0; }
+  .steps li:not(:last-child)::after { left: 40px; right: calc(-1 * var(--space-6)); top: 19px; bottom: auto; width: auto; height: 2px; transform-origin: left; }
+}
+
+/* Attribution: platforms over-count compared with actual sales */
+.overcount { margin: 0; max-width: 760px; }
+.oc-row + .oc-row { margin-top: var(--space-6); }
+.oc-label { display: block; font-size: 14px; line-height: 20px; font-weight: 500; margin-bottom: var(--space-2); }
+.oc-track { position: relative; height: 40px; }
+.oc-bar { display: flex; gap: 2px; height: 100%; transform-origin: left; }
+.oc-bar span { display: flex; align-items: center; min-width: 0; padding: 0 var(--space-2); background: var(--chart-bar); color: var(--white); font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; }
+.oc-actual { width: 71%; }
+.oc-actual span { flex: 1; background: var(--accent); color: var(--on-accent); }
+.oc-track-line::after { content: ""; position: absolute; left: 71%; top: -6px; bottom: -6px; border-left: 2px dashed var(--ink); }
+.overcount figcaption { margin-top: var(--space-4); font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+
+/* Attribution models: two columns */
+.split { display: grid; gap: var(--space-8); }
+@media (min-width: 880px) { .split { grid-template-columns: 1fr 1fr; gap: var(--space-12); } }
+.split p { margin: var(--space-2) 0 0; }
+
+/* Pricing facts */
+.facts { display: grid; grid-template-columns: 1fr 1fr; margin: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+@media (min-width: 880px) { .facts { grid-template-columns: repeat(4, 1fr); } }
+.facts > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: var(--space-2); padding: var(--space-6) var(--space-4); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.facts dd { margin: 0; font: 800 34px/36px var(--font-display); }
+@media (min-width: 720px) { .facts dd { font-size: 44px; line-height: 44px; } .facts > div { padding: var(--space-6); } }
+.facts dt { font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+
+/* Related services */
+.related { display: grid; gap: var(--space-4); }
+@media (min-width: 720px) { .related { grid-template-columns: 1fr 1fr; gap: var(--space-6); } }
+.related a { display: block; border: 1px solid var(--border); padding: var(--space-6); text-decoration: none; transition: border-color 0.3s; }
+.related a::before { content: ""; display: block; width: 48px; height: 4px; background: var(--accent); margin-bottom: var(--space-4); transition: width 0.5s var(--ease-out); }
+.related a:hover { border-color: var(--border-strong); color: inherit; }
+.related a:hover::before { width: 100%; }
+.related-title { display: block; font-size: 20px; line-height: 26px; font-weight: 700; color: var(--ink); }
+.related .muted { display: block; margin-top: var(--space-1); }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The page-head chart plots itself on load, like the home hero */
+  .head-geo rect, .head-geo polygon { transform-box: fill-box; transform-origin: bottom; animation: grow 1s var(--ease-out) both; }
+  .head-geo rect:nth-of-type(1) { animation-delay: 0.3s; }
+  .head-geo rect:nth-of-type(2) { animation-delay: 0.4s; }
+  .head-geo rect:nth-of-type(3) { animation-delay: 0.5s; }
+  .head-geo rect:nth-of-type(4) { animation-delay: 0.6s; }
+  .head-geo polygon { animation-duration: 1.3s; animation-delay: 0.75s; }
+
+  /* The step rail draws in as it scrolls into view */
+  .js .steps li::after { transform: scaleY(0); transition: transform 0.6s var(--ease-out); }
+  .js .steps.in li::after { transform: none; }
+  .js .steps li:nth-child(2)::after { transition-delay: 0.15s; }
+  .js .steps li:nth-child(3)::after { transition-delay: 0.3s; }
+  .js .steps li:nth-child(4)::after { transition-delay: 0.45s; }
+  @media (min-width: 960px) { .js .steps li::after { transform: scaleX(0); } }
+
+  /* Over-count bars fill when they scroll into view */
+  .js .overcount .oc-bar { transform: scaleX(0); transition: transform 0.9s var(--ease-out); }
+  .js .overcount .oc-row + .oc-row .oc-bar { transition-delay: 0.25s; }
+  .js .overcount.in .oc-bar { transform: none; }
+}
 
 /* Services menu in the header. Without JS it's a plain link to the home page section. */
 .nav-menu { display: flex; align-items: center; }
