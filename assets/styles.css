@@ -445,3 +445,61 @@ html.theme-switching::view-transition-new(root) { animation: none; mix-blend-mod
   from { clip-path: inset(100% 0 0 0); transform: translateY(0.35em); }
   to { clip-path: inset(0 0 -0.2em 0); transform: none; }
 }
+
+/* ==========================================================================
+   Service pages
+   ========================================================================== */
+/* Card link to each service page, aligned to the bottom of every card */
+.card-link { margin-top: auto; font-weight: 500; text-underline-offset: 4px; }
+
+/* Long-form copy on service pages (same rhythm as .legal) */
+.prose { max-width: 720px; padding: var(--space-12) 0 var(--space-16); }
+.prose h2 { margin: var(--space-12) 0 var(--space-4); }
+.prose p, .prose ul, .prose ol { margin: 0 0 var(--space-4); }
+.prose ul, .prose ol { padding-left: 20px; }
+.prose li + li { margin-top: var(--space-2); }
+.prose li::marker { color: var(--accent-ink); font-weight: 700; }
+
+/* Services menu in the header. Without JS it's a plain link to the home page section. */
+.nav-menu { display: flex; align-items: center; }
+.nav-menu-btn, .nav-menu-list { display: none; }
+.js .nav-menu-link { display: none; }
+.js .nav-menu-btn {
+  display: inline-flex; align-items: center; gap: 6px; position: relative;
+  font: 500 14px/20px var(--font-sans); color: var(--ink); background: none; border: 0; padding: 10px 0; cursor: pointer;
+}
+.nav-menu-btn:hover { color: var(--accent-ink); }
+.nav-menu-btn svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--ease-out); }
+.nav-menu-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.nav-menu-btn::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease-out);
+}
+.nav-menu-btn:hover::after, .nav-menu-btn[aria-expanded="true"]::after { transform: scaleX(1); }
+/* Phones: the menu drops full width under the header (the sticky header is its containing block) */
+.nav-menu-list {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 110;
+  margin: 0; padding: var(--space-2) 0; list-style: none;
+  background: var(--surface); border-bottom: 1px solid var(--border); border-top: 3px solid var(--accent);
+}
+.js .nav-menu.open .nav-menu-list { display: block; }
+.nav .nav-menu-list a { display: block; padding: var(--space-3) var(--gutter); font-size: 16px; line-height: 24px; color: var(--ink); }
+.nav .nav-menu-list a::after { display: none; }
+.nav .nav-menu-list a:hover, .nav .nav-menu-list a[aria-current="page"] { background: var(--surface-raised); box-shadow: inset 3px 0 0 var(--accent); }
+@media (min-width: 560px) {
+  .nav-menu { position: relative; }
+  .nav-menu-list { top: calc(100% + 6px); left: -16px; right: auto; min-width: 240px; border: 1px solid var(--border); border-top: 3px solid var(--accent); }
+  .nav .nav-menu-list a { padding: 10px var(--space-4); font-size: 15px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .nav-menu.open .nav-menu-list { animation: fade-up 0.25s var(--ease-out); }
+}
+/* Narrow phones: tighten the header so Services, the toggle, and Contact fit on one row */
+@media (max-width: 559px) {
+  .nav { gap: var(--space-3); }
+  .site-header .wrap { gap: var(--space-3); }
+}
+@media (max-width: 399px) {
+  .logo img, .site-header.is-scrolled .logo img { width: 120px; }
+  .nav .btn-sm { padding-left: var(--space-3); padding-right: var(--space-3); }
+}
