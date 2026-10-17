@@ -32,6 +32,9 @@
   --negative: #b8431c;
   --inverse-action: var(--lime);
   --on-inverse-action: var(--navy);
+  --chart-bar: var(--navy);
+  --btn-sweep: var(--lime);
+  --on-inverse-muted: #c9d3e1;
 
   /* Type */
   --font-display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -45,6 +48,48 @@
   --max: 1120px;
   --gutter: 16px;
   color-scheme: light;
+}
+
+/* Dark theme: follows the system unless the visitor picks one with the toggle (data-theme on <html>). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface: #081a33;
+    --surface-raised: #0e2442;
+    --surface-inverse: #030d1f;
+    --ink: #eef2f7;
+    --ink-muted: #a6b2c3;
+    --border: #1d3557;
+    --border-strong: #5a6d8a;
+    --primary: var(--lime);
+    --on-primary: var(--navy);
+    --primary-hover: #9fe11f;
+    --accent-ink: var(--lime);
+    --focus: var(--lime);
+    --positive: var(--lime);
+    --negative: #ff9b73;
+    --chart-bar: #2b4a77;
+    --btn-sweep: var(--navy);
+}
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #081a33;
+  --surface-raised: #0e2442;
+  --surface-inverse: #030d1f;
+  --ink: #eef2f7;
+  --ink-muted: #a6b2c3;
+  --border: #1d3557;
+  --border-strong: #5a6d8a;
+  --primary: var(--lime);
+  --on-primary: var(--navy);
+  --primary-hover: #9fe11f;
+  --accent-ink: var(--lime);
+  --focus: var(--lime);
+  --positive: var(--lime);
+  --negative: #ff9b73;
+  --chart-bar: #2b4a77;
+  --btn-sweep: var(--navy);
 }
 
 * { box-sizing: border-box; }
@@ -144,13 +189,13 @@ h3 { font-size: 20px; line-height: 26px; }
 .rule p { margin: 0; color: var(--ink-muted); }
 
 .bars { display: flex; align-items: flex-end; gap: 6px; height: 48px; margin-bottom: var(--space-4); }
-.bars span { width: 12px; background: var(--navy); }
+.bars span { width: 12px; background: var(--chart-bar); }
 .bars span:last-child { background: var(--accent); }
 
 /* CTA band */
 .cta { background: var(--surface-inverse); color: var(--ink-inverse); padding: var(--space-16) 0; position: relative; overflow: hidden; }
 .cta .wrap { display: flex; flex-direction: column; gap: var(--space-6); align-items: flex-start; position: relative; z-index: 1; }
-.cta p { margin: 0; max-width: 520px; color: #c9d3e1; }
+.cta p { margin: 0; max-width: 520px; color: var(--on-inverse-muted); }
 .cta-wedge { position: absolute; right: 0; bottom: 0; width: 280px; height: 100%; display: none; }
 @media (min-width: 800px) { .cta .wrap { flex-direction: row; align-items: center; justify-content: space-between; } .cta-wedge { display: block; } .cta .btn { margin-right: 120px; } }
 
@@ -167,7 +212,7 @@ h3 { font-size: 20px; line-height: 26px; }
 /* Page header (inner pages) */
 .page-head { background: var(--surface-inverse); color: var(--ink-inverse); padding: var(--space-12) 0; position: relative; overflow: hidden; }
 .page-head .eyebrow { color: var(--lime); }
-.page-head p { color: #c9d3e1; margin: var(--space-4) 0 0; max-width: 560px; }
+.page-head p { color: var(--on-inverse-muted); margin: var(--space-4) 0 0; max-width: 560px; }
 
 /* Contact */
 .contact-grid { display: grid; gap: var(--space-12); grid-template-columns: 1fr; }
@@ -245,7 +290,7 @@ h3 { font-size: 20px; line-height: 26px; }
 .btn { position: relative; overflow: hidden; isolation: isolate; transition: background-color 0.25s, color 0.25s; }
 .btn::after {
   content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
-  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  background: var(--btn-sweep); transform: scaleX(0); transform-origin: left;
   transition: transform 0.35s var(--ease-out);
 }
 .btn:hover::after, .btn:focus-visible::after { transform: scaleX(1); }
@@ -306,3 +351,97 @@ h3 { font-size: 20px; line-height: 26px; }
 .card > * { max-width: 62ch; } /* readable line length when cards stack on tablets */
 @media (min-width: 800px) { .cta-wedge { right: max(0px, calc((100vw - var(--max)) / 2)); } } /* keep wedge near content on wide screens */
 .toc li a { display: inline-block; padding: 3px 0; } /* 24px minimum tap height */
+
+/* ==========================================================================
+   Theme toggle
+   ========================================================================== */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: block; }
+}
+
+.theme-toggle {
+  display: none; /* shown once JS can run it */
+  width: 40px; height: 40px; padding: 0; border: 1px solid var(--border); border-radius: 0;
+  background: transparent; color: var(--ink); cursor: pointer;
+  align-items: center; justify-content: center; position: relative; overflow: hidden;
+  transition: border-color 0.25s;
+}
+.js .theme-toggle { display: inline-flex; }
+.theme-toggle:hover { border-color: var(--border-strong); }
+.theme-toggle svg {
+  position: absolute; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
+  transition: transform 0.5s var(--ease-out), opacity 0.3s;
+}
+.theme-toggle .icon-moon path { fill: currentColor; stroke: none; }
+/* Light theme shows the moon (switch to dark); dark theme shows the sun. */
+.theme-toggle .icon-sun { transform: rotate(-90deg) scale(0.4); opacity: 0; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { transform: rotate(90deg) scale(0.4); opacity: 0; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { transform: none; opacity: 1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { transform: rotate(90deg) scale(0.4); opacity: 0; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { transform: none; opacity: 1; }
+}
+
+/* Charts take their bar color from the theme */
+.hero-geo rect { fill: var(--chart-bar); }
+
+/* The theme switch wipes outward from the toggle (JS drives the clip-path) */
+html.theme-switching::view-transition-old(root),
+html.theme-switching::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* ==========================================================================
+   Motion, round two
+   ========================================================================== */
+/* Compact hero chart on phones and tablets (it was desktop-only) */
+@media (max-width: 899px) {
+  .hero { padding-bottom: 72px; }
+  .hero-geo { display: block; width: 132px; height: 154px; right: var(--gutter); bottom: 0; }
+}
+@media (max-width: 359px) { .hero { padding-bottom: 168px; } } /* too narrow to sit beside the button */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Pages crossfade when navigating between them */
+  @view-transition { navigation: auto; }
+
+  /* Hero button: the lime bar sweeps across once after the chart lands */
+  .hero .btn::after { animation: sweep 1.1s var(--ease-in-out) 1.6s backwards; }
+
+  /* Headlines rise out of a mask: on load for page titles, on scroll for sections */
+  .rise { animation: rise-mask 0.9s var(--ease-out) 0.1s both; }
+  .js .section-head h2, .js .cta h2 {
+    clip-path: inset(100% 0 0 0); transform: translateY(0.35em);
+    transition: clip-path 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .js .section-head.in h2, .js .cta.in h2 { clip-path: inset(0 0 -0.2em 0); transform: none; }
+
+  /* Card bars grow one card at a time as each scrolls in */
+  .js .card.in .card-bar { transform: none; }
+
+  /* How we work: each divider draws left to right, the number rises in */
+  .js .rule { position: relative; border-bottom-color: transparent; }
+  .js .rule::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--border);
+    transform: scaleX(0); transform-origin: left; transition: transform 1s var(--ease-out);
+  }
+  .js .rule .rule-n { opacity: 0; transform: translateY(0.5em); transition: opacity 0.6s, transform 0.7s var(--ease-out); }
+  .js .rule.in::after { transform: none; }
+  .js .rule.in .rule-n { opacity: 1; transform: none; }
+  .js .rule:nth-child(2)::after, .js .rule:nth-child(2) .rule-n { transition-delay: 0.1s; }
+  .js .rule:nth-child(3)::after, .js .rule:nth-child(3) .rule-n { transition-delay: 0.2s; }
+  .js .rule:nth-child(4)::after, .js .rule:nth-child(4) .rule-n { transition-delay: 0.3s; }
+}
+
+@keyframes sweep {
+  0% { transform: scaleX(0); transform-origin: left; }
+  50% { transform: scaleX(1); transform-origin: left; }
+  50.01% { transform: scaleX(1); transform-origin: right; }
+  100% { transform: scaleX(0); transform-origin: right; }
+}
+@keyframes rise-mask {
+  from { clip-path: inset(100% 0 0 0); transform: translateY(0.35em); }
+  to { clip-path: inset(0 0 -0.2em 0); transform: none; }
+}

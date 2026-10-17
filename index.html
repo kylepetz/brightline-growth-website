@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script>document.documentElement.classList.add("js")</script>
+<script>(function(d){d.classList.add("js");try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}})(document.documentElement)</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Brightline Growth | Growth Marketing Consultancy</title>
 <meta name="description" content="Brightline Growth is a Southern California growth marketing consultancy offering paid media management, attribution, and marketing automation.">
@@ -62,10 +62,14 @@
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <a class="logo" href="/" aria-label="Brightline Growth home"><img src="assets/brightline-growth-lockup.svg" alt="Brightline Growth" width="170" height="54"></a>
+    <a class="logo" href="/" aria-label="Brightline Growth home"><img class="logo-light" src="assets/brightline-growth-lockup.svg" alt="Brightline Growth" width="170" height="54"><img class="logo-dark" src="assets/brightline-growth-lockup-reversed.svg" alt="" width="170" height="54"></a>
     <nav class="nav" aria-label="Main">
       <a href="/#services" class="nav-hide">Services</a>
       <a href="/#how" class="nav-hide">How we work</a>
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
       <a href="contact.html" class="btn btn-sm">Contact</a>
     </nav>
   </div>
