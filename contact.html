@@ -31,7 +31,15 @@
   <div class="wrap">
     <a class="logo" href="/" aria-label="Brightline Growth home"><img class="logo-light" src="assets/brightline-growth-lockup.svg" alt="Brightline Growth" width="170" height="54"><img class="logo-dark" src="assets/brightline-growth-lockup-reversed.svg" alt="" width="170" height="54"></a>
     <nav class="nav" aria-label="Main">
-      <a href="/#services" class="nav-hide">Services</a>
+      <div class="nav-menu">
+        <a href="/#services" class="nav-menu-link">Services</a>
+        <button class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="services-menu">Services<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg></button>
+        <ul class="nav-menu-list" id="services-menu">
+          <li><a href="paid-media.html">Paid media</a></li>
+          <li><a href="attribution.html">Attribution</a></li>
+          <li><a href="automation.html">Marketing automation</a></li>
+        </ul>
+      </div>
       <a href="/#how" class="nav-hide">How we work</a>
       <button class="theme-toggle" type="button" aria-label="Switch to dark mode">
         <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></svg>
@@ -131,6 +139,9 @@
       <a class="logo" href="/" aria-label="Brightline Growth home"><img src="assets/brightline-growth-lockup-reversed.svg" alt="Brightline Growth" width="160" height="51"></a>
       <nav class="footer-links" aria-label="Footer">
         <a href="/#services">Services</a>
+        <a href="paid-media.html">Paid media</a>
+        <a href="attribution.html">Attribution</a>
+        <a href="automation.html">Marketing automation</a>
         <a href="contact.html">Contact</a>
         <a href="privacy.html">Privacy policy</a>
         <a href="terms.html">Terms of service</a>

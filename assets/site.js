@@ -48,6 +48,25 @@
   systemDark.addEventListener("change", syncThemeUI);
   syncThemeUI();
 
+  // Services menu: opens on click, closes on Escape, outside clicks, or tabbing away.
+  document.querySelectorAll(".nav-menu").forEach(function (menu) {
+    var btn = menu.querySelector(".nav-menu-btn");
+    if (!btn) return;
+    function setOpen(open) {
+      menu.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    btn.addEventListener("click", function () { setOpen(!menu.classList.contains("open")); });
+    menu.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && menu.classList.contains("open")) { setOpen(false); btn.focus(); }
+    });
+    // Only keyboard moves set relatedTarget; mouse clicks are handled by the document listener.
+    menu.addEventListener("focusout", function (e) {
+      if (e.relatedTarget && !menu.contains(e.relatedTarget)) setOpen(false);
+    });
+    document.addEventListener("click", function (e) { if (!menu.contains(e.target)) setOpen(false); });
+  });
+
   // Header compacts after the page scrolls a little.
   var header = document.querySelector(".site-header");
   if (header) {
