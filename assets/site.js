@@ -96,3 +96,123 @@
   }, { threshold: 0.3, rootMargin: "0px 0px -8% 0px" });
   targets.forEach(function (el) { io.observe(el); });
 })();
+
+// Home: the hero chart counts up, sample screens respond, and small bits of play.
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var finePointer = window.matchMedia("(pointer: fine)").matches;
+  function fmt(n) { return n.toLocaleString("en-US"); }
+
+  function countUp(el, dur) {
+    var target = +el.getAttribute("data-count"), start = null;
+    function step(t) {
+      if (start === null) start = t;
+      var p = Math.min(1, (t - start) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * e));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = fmt(target);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // Square sparks that burst from an element, inside its sample screen.
+  function burst(from) {
+    if (reduce || !from || !from.animate) return;
+    var mock = from.closest(".mock");
+    if (!mock) return;
+    var mr = mock.getBoundingClientRect(), br = from.getBoundingClientRect();
+    var cx = br.left - mr.left + br.width / 2, cy = br.top - mr.top + br.height / 2;
+    for (var i = 0; i < 10; i++) {
+      var s = document.createElement("span");
+      s.className = "mock-spark";
+      s.style.left = (cx - 3) + "px";
+      s.style.top = (cy - 3) + "px";
+      mock.appendChild(s);
+      var a = (Math.PI * 2 * i) / 10 + Math.random() * 0.4, d = 26 + Math.random() * 26;
+      s.animate(
+        [{ transform: "translate(0,0) rotate(0)", opacity: 1 },
+         { transform: "translate(" + Math.cos(a) * d + "px," + Math.sin(a) * d + "px) rotate(180deg) scale(.3)", opacity: 0 }],
+        { duration: 650 + Math.random() * 250, easing: "cubic-bezier(0.16, 1, 0.3, 1)" }
+      ).onfinish = (function (el) { return function () { el.remove(); }; })(s);
+    }
+  }
+
+  // Pause button on the over-target campaign (works with reduced motion too).
+  document.querySelectorAll(".mock-pause").forEach(function (btn) {
+    var row = btn.closest("tr"), toast = btn.closest(".mock").querySelector(".mock-toast");
+    btn.addEventListener("click", function () {
+      var paused = row.classList.toggle("is-paused");
+      btn.textContent = paused ? "Resume" : "Pause";
+      if (toast) toast.hidden = !paused;
+      if (paused) burst(btn);
+    });
+  });
+
+  if (reduce) return;
+
+  // Hero numbers count up as the bars grow.
+  document.querySelectorAll(".scene [data-count]").forEach(function (el) {
+    if (!el.getClientRects().length) return; // the hidden layout
+    setTimeout(function () { countUp(el, 1100); }, +el.getAttribute("data-delay") || 0);
+  });
+
+  if (finePointer) {
+    // Floating marks drift away from the pointer.
+    var hero = document.querySelector(".hero-band");
+    if (hero) {
+      var marks = hero.querySelectorAll(".sparkles span");
+      hero.addEventListener("pointermove", function (e) {
+        var r = hero.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        marks.forEach(function (m, i) {
+          var k = 10 + (i % 3) * 8;
+          m.style.setProperty("--mx", (-x * k) + "px");
+          m.style.setProperty("--my", (-y * k) + "px");
+        });
+      });
+    }
+    // Sample screens tilt slightly toward the pointer.
+    document.querySelectorAll(".mock").forEach(function (m) {
+      m.addEventListener("pointermove", function (e) {
+        var r = m.getBoundingClientRect();
+        m.style.setProperty("--ry", (((e.clientX - r.left) / r.width - 0.5) * 6) + "deg");
+        m.style.setProperty("--rx", (-((e.clientY - r.top) / r.height - 0.5) * 5) + "deg");
+      });
+      m.addEventListener("pointerleave", function () { m.style.setProperty("--rx", "0deg"); m.style.setProperty("--ry", "0deg"); });
+    });
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".recon").forEach(function (r) { r.classList.add("in"); });
+    return;
+  }
+  function once(el, fn, threshold) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { io.disconnect(); fn(); } });
+    }, { threshold: threshold || 0.3 });
+    io.observe(el);
+  }
+
+  // Attribution sample: bars fill and the numbers count when it scrolls in.
+  document.querySelectorAll(".recon").forEach(function (recon) {
+    once(recon, function () {
+      recon.classList.add("in");
+      recon.querySelectorAll("[data-count]").forEach(function (v, i) { setTimeout(function () { countUp(v, 900); }, i * 120); });
+    }, 0.4);
+  });
+
+  // Automation sample: the lead ticks through each step, then a small burst.
+  document.querySelectorAll(".lead-steps").forEach(function (list) {
+    if (list.getBoundingClientRect().top < window.innerHeight) return; // already on screen at load
+    var items = list.querySelectorAll("li");
+    list.classList.add("playing");
+    items.forEach(function (li) { li.classList.remove("done"); });
+    once(list, function () {
+      items.forEach(function (li, i) {
+        setTimeout(function () {
+          li.classList.add("done");
+          if (i === items.length - 1) { burst(li.querySelector(".lead-dot")); setTimeout(function () { list.classList.remove("playing"); }, 400); }
+        }, 300 + i * 500);
+      });
+    }, 0.5);
+  });
+})();
